@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+        <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/1.1.2/tailwind.min.css">
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    </head>
+    
+    
+    
+    <body class="bg-gray-100">
+    <div class="mx-auto p-4">
+        <div class="flex flex-row justify-between">
+      <h1 class="text-2xl mb-8">Users</h1>
+      <button class="bg-blue-500 h-10 p-2 rounded-full"><a href="next.html">Add user</a></button>
+    </div>
+    <div class="flex flex-col" data-aos="fade-up">
+      <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+        <div class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
+          <div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
+            <table class="min-w-full divide-y divide-gray-200">
+              <thead>
+                <tr>
+                  <th class="px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
+                    ID
+                  </th>
+                  <th class="px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
+                    Name
+                  </th>
+                  <th class="px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
+                    Username
+                  </th>
+                  <th class="px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
+                    Avatar
+                  </th>
+                </tr>
+              </thead>
+
+              <tbody id="tbody" class="bg-white divide-y divide-gray-200 tbody">
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+      
+    </div>
+
+
+    <script>
+
+document.addEventListener('DOMContentLoaded', () => {
+  const url = 'https://6763a87617ec5852cae98323.mockapi.io/users';
+  const tbody = document.querySelector('#tbody');
+
+  if (tbody) {
+      console.log('Tbody found:', tbody);
+  } else {
+      console.error('The tbody element was not found.');
+  }
+
+  function usersLoad(){
+  axios.get(url)
+      .then(function (response) {
+          const data = response.data;
+          console.log('Fetched Data:', data);
+
+          if (!tbody) {
+              console.error('The tbody element was not found.');
+              return;
+          }
+
+          data.forEach(user => {
+    tbody.innerHTML += `
+    <tr data-aos="fade-up" data-id="${user.id}">
+        <td class="px-6 py-4 whitespace-no-wrap">
+            <div class="flex items-center">
+                <div class="ml-4">
+                    <div class="text-sm leading-5 font-medium text-gray-900">
+                        ${user.id}
+                    </div>
+                </div>
+            </div>
+        </td>
+        <td class="px-6 py-4 whitespace-no-wrap">
+            <div class="text-sm leading-5 text-gray-900">${user.name}</div>
+        </td>
+        <td class="px-6 py-4 whitespace-no-wrap">
+            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                ${user.username}
+            </span>
+        </td>
+        <td class="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-500">
+            <img class="w-8 h-8 rounded" src="${user.avatar}">
+        </td>
+        <td>
+            <button class="bg-red-400 rounded-full p-2" onclick="deleteUser(${user.id})">Delete</button>
+        </td>
+    </tr>
+    `;
+});
+
+      })
+      .catch(function (error) {
+          console.error('Error fetching data:', error);
+      });
+    }
+    usersLoad()
+});
+
+function deleteUser(id) {
+    axios.delete(`https://6763a87617ec5852cae98323.mockapi.io/users/${id}`)
+    .then(function(response) {
+        const row = document.querySelector(`tr[data-id='${id}']`);
+        if (row) {
+            row.remove();
+        }
+    })
+    .catch(function(error) {
+        console.error('Error deleting user:', error);
+        alert('Error deleting user');
+    });
+}
+
+
+AOS.init()
+
+    </script>
+    </body>
+</html>
