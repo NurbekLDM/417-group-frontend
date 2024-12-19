@@ -6,10 +6,13 @@
     <title>Login</title>
     <script src="index.js" defer></script>
     <link rel="stylesheet" href="style.css">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/1.1.2/tailwind.min.css">
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 </head>
 <body>
-    <form class="login-form">
+    <form onsubmit="login(event)" class="login-form">
         <p class="login-text">
           <span class="fa-stack fa-lg">
             <i class="fa fa-circle fa-stack-2x"></i>
@@ -19,6 +22,7 @@
         <input type="text" class="login-username" autofocus="true" required="true" placeholder="Email" />
         <input type="password" class="login-password" required="true" placeholder="Password" />
         <input type="submit" name="Login" value="Login" class="login-submit" />
+        <p style="color:red" id="error"></p>
       </form>
       <a href="#" class="login-forgot-pass">forgot password?</a>
       <div class="underlay-photo"></div>
